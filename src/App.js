@@ -1,27 +1,30 @@
-import './App.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { getData } from './features/dataSlice';
+import { getData } from "./features/usersSlice";
+import { useSelector, useDispatch} from 'react-redux';
+import { useEffect } from 'react';
 
-function App() {
-  const data = useSelector((state)=>state.api);
+function App(){
   const dispatch = useDispatch();
-  if(data.loading){
-    return (<h1>loading...</h1>)
+  useEffect(()=>{
+    dispatch(getData())
+  }, [dispatch])
+  const response = useSelector((state)=>state.apiData);
+  if(response.loading){
+    return <h1>lOADING...</h1>
   }
-  if(data.error != null){
-    return (<h3>{data.error}</h3>)
-  }
+
   return (
-    <div className="App">
-      <h1>Hello Parent Component</h1>
-      <button onClick={()=>dispatch(getData())} >Click Me !!!</button>
-      {
-        data.users.map((value)=>(
-          <p key={value.id} >{value.title}</p>
-        ))
-      }
-    </div>
-  );
+    <>
+    <h1>Hello parent component</h1>
+    {
+      response.error? <h1>Error in fetching data</h1> :
+      response.data.map((value, index)=>(
+        <h3 key={index}> {value.title} </h3>
+      ))
+     
+    }
+     </>
+  )
+ 
 }
 
 export default App;
