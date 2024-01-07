@@ -40,7 +40,7 @@ export default usersSlice.reducer;
 
 // if API is calling using axios library then code is given below :-
 
-import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+//import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 // import axios from 'axios';
 
 // export const getData = createAsyncThunk('api call', async ()=>{
