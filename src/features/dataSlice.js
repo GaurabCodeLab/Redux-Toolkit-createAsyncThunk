@@ -1,37 +1,38 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
-//action
-export const getData = createAsyncThunk("raja", async (args, {rejectWithValue})=>{
+export const getData = createAsyncThunk('api call', async ()=>{
     try {
-        const result = await fetch("https://jsonplaceholder.typicode.com/posts");
+        const result = await fetch('https://jsonplaceholder.typicode.com/posts');
+        if(!result.ok){
+            throw new Error("something went wrong");
+        }
         const response = await result.json();
-        return response;
+        return response
     } catch (error) {
-        return rejectWithValue("Oops an error found")
+        console.log(error);
     }
-    
-})
+});
 
-export const dataSlice = createSlice({
-    name : "api call",
+export const usersSlice = createSlice({
+    name : "users",
     initialState : {
-        users : [],
+        data : [],
         loading : false,
         error : null
     },
-    extraReducers : {
-        [getData.pending] : (state)=>{
-            state.loading = true
-        },
-        [getData.fulfilled] : (state, action)=>{
-             state.loading = false;
-             state.users = action.payload
-        },
-        [getData.rejected] : (state, action)=>{
-             state.loading = false;
-             state.error = action.payload
-        }
-    }
+  extraReducers : (builder)=>{
+     builder.addCase(getData.pending, (state)=>{
+        state.loading = true;
+     });
+     builder.addCase(getData.fulfilled, (state, action)=>{
+        state.loading = false;
+        state.data = action.payload
+     });
+     builder.addCase(getData.rejected, (state, action)=>{
+        state.loading = false;
+        state.error = action.payload;
+     })
+  }
 })
 
-export default dataSlice.reducer;
+export default usersSlice.reducer;
