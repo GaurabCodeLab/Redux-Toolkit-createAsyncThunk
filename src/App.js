@@ -1,4 +1,4 @@
-import { getData } from "./features/usersSlice";
+import { getData } from "./features/dataSlice";
 import { useSelector, useDispatch} from 'react-redux';
 import { useEffect } from 'react';
 
